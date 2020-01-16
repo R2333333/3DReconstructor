@@ -5,7 +5,7 @@
 
 Authors:
 ---
-Roy Xu, Jiangyuan Wu, Wayne Du
+Roy Xu, Jiangyuan Wu, Wayne Du, Shaohong Wan
 
 
 Description:
@@ -43,75 +43,92 @@ The goals we need to achieve:
 The successful project should produce 3D object similar to the original object, except for surfaces that curve into the object. The time should be engough if we start the project early.
 
 *Table 1. Weekly Schedual*
-| Roy Xu | Wayne Du | Jiangyuan Wu|
-| -------- | ----------- | ------------- |
-    
-
 <table style="width:100%">
   <tr>
     <td></td>
     <th>Roy Xu</th>
     <th>Wayne Du</th>
     <th>Jiangyuan Wu</th>
+    <th>Shaohong Wan</th>
   </tr>
   <tr>
     <td>week 1</td>
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
+
   </tr>
   <tr>
     <td>week 2</td>
     <td></td>
     <td></td>
     <td></td>
+      <td></td>
+
   </tr>
   <tr>
     <td>week 2</td>
     <td></td>
     <td></td>
     <td></td>
+      <td></td>
+
   </tr>
   <tr>
     <td>week 3</td>
     <td></td>
     <td></td>
     <td></td>
+      <td></td>
+
   </tr>
   <tr>
     <td>week 4</td>
     <td></td>
     <td></td>
     <td></td>
+      <td></td>
+
   </tr>
   <tr>
     <td>week 5</td>
     <td></td>
     <td></td>
     <td></td>
+      <td></td>
+
   </tr>
   <tr>
     <td>week 6</td>
     <td></td>
     <td></td>
     <td></td>
+      <td></td>
+
   </tr>
   <tr>
     <td>week 7</td>
     <td></td>
     <td></td>
     <td></td>
+      <td></td>
+
   </tr>
   <tr>
     <td>week 8</td>
     <td></td>
     <td></td>
     <td></td>
+      <td></td>
+
   </tr>
   <tr>
     <td>week 9</td>
     <td></td>
     <td></td>
     <td></td>
+      <td></td>
+
   </tr>
 </table>
