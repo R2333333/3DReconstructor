@@ -18,8 +18,15 @@ Our idea is coming from a tool called Milkscanner that allows the scanning of ob
 
 Milkscanner is a great idea to produce the displacement map, but it takes a long time to get every cross-sections and some objects are not allowed to put into milk (liquid). Our idea is to generate a displacement map simply with three-views-drawing. We try to use three-views-drawing to determine the position of a point, which is on the surface of our object, in three dimensions space.
 
+![need some pictures](/drawing.png)
+
 The Challenge:
 ---
-There are some challenging factors on this project. For example, the scale of the object on three-views-drawing should be as same as possible to generate an accurate displacement map. And there are no existing research on this field that we can refer as a reference.
+There are following challanges on this project. 
+  
+    1. The scale of the object on three-views-drawing should be as same as possible to generate an accurate displacement map.
+    2. There are no existing research on the same topic that we can refer as a reference, however, some simillar topics exist.
+    3. We need to detect the edges as accurate as we can, since the demention factors highly depend on the edges.
+    3. We need to learn how to make 3D objects.
+    
 
-![need some pictures](/drawing.png)
