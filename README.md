@@ -49,7 +49,7 @@ The successful project should produce 3D object similar to the original object, 
     <th>Roy Xu</th>
     <th>Wayne Du</th>
     <th>Jiangyuan Wu</th>
-    <th>Shaohong Wan</th>
+    <th>Zhaohong Wan</th>
   </tr>
   <tr>
     <td>week 1</td>
