@@ -15,10 +15,10 @@ front, left, top = drawSame()
 
 # print(front[25:50, 40:50])
 
-plt.imshow(front)
-plt.show()
-plt.imshow(left)
-plt.show()
-plt.imshow(top)
-plt.show()
+# plt.imshow(front)
+# plt.show()
+# plt.imshow(left)
+# plt.show()
+# plt.imshow(top)
+# plt.show()
 
