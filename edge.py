@@ -1,5 +1,7 @@
 import numpy as np
 import cv2
+from image import drawSame
+
 #gaussian filter
 def gaussian_filter(sigma):
     size = 2 * np.ceil(3*sigma) + 1
@@ -85,13 +87,15 @@ def convolution(img, kernel, average=False):
     return output
 
 #main function
-#gray = cv2.imread("img0.jpg", cv2.IMREAD_GRAYSCALE)
-#new_kernel = gaussian_filter(1)
-#newImg = convolution(gray, new_kernel)
-#g, d = sobel(newImg)
-#final = non_max_suppression(g, d)
+# gray = cv2.imread("img0.jpg", cv2.IMREAD_GRAYSCALE)
+front, left, top = drawSame()
+gray = front
+new_kernel = gaussian_filter(1)
+newImg = convolution(gray, new_kernel)
+g, d = sobel(newImg)
+final = non_max_suppression(g, d)
 #cv2.imwrite("gradient orientation.jpg", d)
 #cv2.imwrite("gradient magnitude.jpg", g)
-#cv2.imwrite("Detection.jpg", final)
-#cv2.waitKey(0)
-#cv2.destroyAllWindows()
+cv2.imshow("Detection", final.astype("uint8"))
+cv2.waitKey(0)
+cv2.destroyAllWindows()
