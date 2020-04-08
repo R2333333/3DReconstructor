@@ -89,13 +89,23 @@ def convolution(img, kernel, average=False):
 #main function
 # gray = cv2.imread("img0.jpg", cv2.IMREAD_GRAYSCALE)
 front, left, top = drawSame()
-gray = front
+gray_front = front
+gray_left = left
+gray_top = top
 new_kernel = gaussian_filter(1)
-newImg = convolution(gray, new_kernel)
-g, d = sobel(newImg)
-final = non_max_suppression(g, d)
+newImg_front = convolution(gray_front, new_kernel)
+newImg_left = convolution(gray_left, new_kernel)
+newImg_top = convolution(gray_top, new_kernel)
+gf, df = sobel(newImg_front)
+gl, dl = sobel(newImg_left)
+gt, dt = sobel(newImg_top)
+final_front = non_max_suppression(gf, df)
+final_left = non_max_suppression(gl, dl)
+final_top = non_max_suppression(gt, df)
 #cv2.imwrite("gradient orientation.jpg", d)
 #cv2.imwrite("gradient magnitude.jpg", g)
-cv2.imshow("Detection", final.astype("uint8"))
+cv2.imshow("Detection_front", final_front.astype("uint8"))
+cv2.imshow("Detection_left", final_left.astype("uint8"))
+cv2.imshow("Detection_top", final_top.astype("uint8"))
 cv2.waitKey(0)
 cv2.destroyAllWindows()
