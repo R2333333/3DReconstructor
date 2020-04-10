@@ -1,7 +1,8 @@
 import numpy as np
 import cv2
 from image import drawSame
-
+import itertools
+from matplotlib import pyplot as plt
 
 # gaussian filter
 def gaussian_filter(sigma):
@@ -96,11 +97,63 @@ def convolution(img, kernel, average=False):
 def get_pixel_set(img):
     pixel_set = []
     X, Y = img.shape
+    left_border = 0
+    right_border = 0
+    top_border = 0
+    bottom_border = 0
     for x in range(0, X):
         for y in range(0, Y):
             if img[x, y] > 0:
                 pixel_set.append([x, y])
-    return pixel_set
+
+    for x in range(0, X):
+        for y in range(0, Y):
+            if img[x, y] > 0:
+                left_border = x
+                break
+
+    for x in range(X - 1, -1, -1):
+        for y in range(Y - 1, -1, -1):
+            if img[x, y] > 0:
+                right_border = x
+                break
+
+    for y in range(0, Y):
+        for x in range(0, X):
+            if img[x, y] > 0:
+                top_border = y
+                break
+
+    for y in range(Y - 1, -1, -1):
+        for x in range(X - 1, -1, -1):
+            if img[x, y] > 0:
+                bottom_border = y
+                break
+
+    y_axial_length = left_border - right_border
+    x_axial_length = top_border - bottom_border
+
+    return pixel_set, y_axial_length, x_axial_length
+
+
+def find_scale_image(fxl, fyl, lxl, lyl, txl, tyl):
+    if fxl / txl < 1 and fyl / lyl < 1:
+        # resize to front scale
+        index = 1
+    elif fxl / txl > 1 and fyl / lyl < 1:
+        # resize to top scale
+        index = 2
+    elif fxl / txl < 1 and fyl / lyl > 1:
+        # resize to left scale
+        index = 3
+    else:
+        if tyl / lxl > 1:
+            # resize to left scale
+            index = 3
+        else:
+            # resize to top scale
+            index = 2
+    return index
 
 
 # main function
@@ -124,30 +177,59 @@ final_left = non_max_suppression(gl, dl)
 final_top = non_max_suppression(gt, dt)
 # cv2.imwrite("gradient orientation.jpg", d)
 # cv2.imwrite("gradient magnitude.jpg", g)
-# print(final_front)
-# print(final_left)
-# print(final_top)
-# Xf, Yf = final_front.shape
-# Xl, Yl = final_left.shape
-# Xt, Yt = final_top.shape
-# front_pixel_set = []
-# left_pixel_set = []
-# top_pixel_set = []
-# for x in range(0, Xf):
-#     for y in range(0, Yf):
-#         if final_front[x, y] == 1:
-#             front_pixel_set.append([x, y])
 
 # now we put every pixels with color into a set for three view images, use these sets to rescale our object later
-front_with_color_pixel = get_pixel_set(final_front)
-left_with_color_pixel = get_pixel_set(final_left)
-top_with_color_pixel = get_pixel_set(final_top)
-# print(front_with_color_pixel)
-# print(left_with_color_pixel)
-# print(top_with_color_pixel)
+front_with_color_pixel, front_y_length, front_x_length = get_pixel_set(final_front)
+left_with_color_pixel, left_y_length, left_x_length = get_pixel_set(final_left)
+top_with_color_pixel, top_y_length, top_x_length = get_pixel_set(final_top)
+print(front_with_color_pixel)
+print(left_with_color_pixel)
+print(top_with_color_pixel)
+# print(front_x_length)
+# print(front_y_length)
+# print(left_x_length)
+# print(left_y_length)
+# print(top_x_length)
+# print(top_y_length)
+check_num = find_scale_image(front_x_length, front_y_length, left_x_length, left_y_length, top_x_length, top_y_length)
+# print(check_num)
+# if check_num == 1:
+#     # resize left and top imgs with front img scale
+Xl, Yl = gray_left.shape
+Xt, Yt = gray_top.shape
+# ratio for left img
+ratio1 = front_y_length / left_y_length
+resize_left_x = int(Xl * ratio1)
+resize_left_y = int(Yl * ratio1)
+print(resize_left_x)
+print(resize_left_y)
+dim_left = (resize_left_x, resize_left_y)
+resize_left = cv2.resize(left, dim_left)
+# ratio for top img
+ratio2 = front_x_length / top_x_length
+resize_top_x = int(Xt * ratio2)
+resize_top_y = int(Yt * ratio2)
+print(resize_top_x)
+print(resize_top_y)
+dim_top = (resize_top_x, resize_top_y)
+resize_top = cv2.resize(top, dim_top)
 
-cv2.imshow("Detection_front", final_front.astype("uint8"))
-cv2.imshow("Detection_left", final_left.astype("uint8"))
-cv2.imshow("Detection_top", final_top.astype("uint8"))
+newImg_resize_left = convolution(resize_left, new_kernel)
+newImg_resize_top = convolution(resize_top, new_kernel)
+grl, drl = sobel(newImg_resize_left)
+grt, drt = sobel(newImg_resize_top)
+final_resize_left = non_max_suppression(grl, drl)
+final_reszie_top = non_max_suppression(grt, drt)
+# cv2.imshow("Detection_front", final_front.astype("uint8"))
+# cv2.imshow("Detection_left", final_left.astype("uint8"))
+# cv2.imshow("Detection_top", final_top.astype("uint8"))
+titles = ['front', 'left', 'top', 'resize left', 'resize top', 'final front', 'final left', 'final top', 'frl', 'frt']
+images = [front, left, top, resize_left, resize_top, final_front, final_left, final_top, final_resize_left, final_reszie_top]
+
+for i in range(10):
+    plt.subplot(2, 5, i+1), plt.imshow(images[i], 'gray'), plt.axis(sharex=True, sharey=True)
+    plt.title(titles[i])
+
+plt.show()
 cv2.waitKey(0)
 cv2.destroyAllWindows()
