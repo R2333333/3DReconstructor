@@ -5,11 +5,12 @@ from matplotlib import pyplot as plt
 
 def drawSame():
     front, left, top = np.zeros((200,200)), np.zeros((200,200)), np.zeros((200,200))
-    front[25:175, 50:150] = (front + 1)[25:175, 50:150]
-    left[50:150, 50:150] = (left + 1)[50:150, 50:150]
-    top += front
+    left[25:175, 50:150] = (left + 1)[25:175, 50:150]
+    top[20:180, 20:180] = (top + 1)[20:180, 20:180]
+    front[40:160, 60:140] = (front + 1)[40:160, 60:140]
 
     return front, left, top
+
 
 front, left, top = drawSame()
 
