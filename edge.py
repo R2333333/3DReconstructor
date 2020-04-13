@@ -194,7 +194,8 @@ print(top_with_color_pixel)
 check_num = find_scale_image(front_x_length, front_y_length, left_x_length, left_y_length, top_x_length, top_y_length)
 # print(check_num)
 # if check_num == 1:
-#     # resize left and top imgs with front img scale
+#     resize left and top imgs with front img scale
+Xf, Yf = gray_front.shape
 Xl, Yl = gray_left.shape
 Xt, Yt = gray_top.shape
 # ratio for left img
@@ -214,8 +215,18 @@ print(resize_top_y)
 dim_top = (resize_top_x, resize_top_y)
 resize_top = cv2.resize(top, dim_top)
 
-newImg_resize_left = convolution(resize_left, new_kernel)
-newImg_resize_top = convolution(resize_top, new_kernel)
+# Full up the resize imgs into the same size as another one which does not need to resize
+resize_Xl, resize_Yl = resize_left.shape
+resize_Xt, resize_Yt = resize_top.shape
+top_bottom_Lborder = (Xf - resize_Xl) // 2
+left_right_Lborder = (Yf - resize_Yl) // 2
+top_bottom_Tborder = (Xf - resize_Xt) // 2
+left_right_Tborder = (Yf - resize_Yt) // 2
+fullup_left = cv2.copyMakeBorder(resize_left, top_bottom_Lborder, top_bottom_Lborder, left_right_Lborder, left_right_Lborder, cv2.BORDER_REPLICATE)
+fullup_top = cv2.copyMakeBorder(resize_top, top_bottom_Tborder, top_bottom_Tborder, left_right_Tborder, left_right_Tborder, cv2.BORDER_REPLICATE)
+
+newImg_resize_left = convolution(fullup_left, new_kernel)
+newImg_resize_top = convolution(fullup_top, new_kernel)
 grl, drl = sobel(newImg_resize_left)
 grt, drt = sobel(newImg_resize_top)
 final_resize_left = non_max_suppression(grl, drl)
@@ -223,8 +234,9 @@ final_reszie_top = non_max_suppression(grt, drt)
 # cv2.imshow("Detection_front", final_front.astype("uint8"))
 # cv2.imshow("Detection_left", final_left.astype("uint8"))
 # cv2.imshow("Detection_top", final_top.astype("uint8"))
+
 titles = ['front', 'left', 'top', 'resize left', 'resize top', 'final front', 'final left', 'final top', 'frl', 'frt']
-images = [front, left, top, resize_left, resize_top, final_front, final_left, final_top, final_resize_left, final_reszie_top]
+images = [front, left, top, fullup_left, fullup_top, final_front, final_left, final_top, final_resize_left, final_reszie_top]
 
 for i in range(10):
     plt.subplot(2, 5, i+1), plt.imshow(images[i], 'gray'), plt.axis(sharex=True, sharey=True)
