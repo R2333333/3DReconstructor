@@ -5,7 +5,7 @@
 
 Authors:
 ---
-Roy Xu, Jiangyuan Wu, Wayne Du, Shaohong Wan
+Roy Xu, Jiangyuan Wu, Wayne Du, Zhaohong Wan
 
 
 Description:
