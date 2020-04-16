@@ -4,6 +4,7 @@ from image import drawSame
 import itertools
 from matplotlib import pyplot as plt
 
+
 # gaussian filter
 def gaussian_filter(sigma):
     size = 2 * np.ceil(3 * sigma) + 1
@@ -193,7 +194,7 @@ def resize(img1, img2, img3, r1, r2):
     fullup_top = cv2.copyMakeBorder(resize_top, top_Tborder, bottom_Tborder, left_Tborder, right_Tborder,
                                     cv2.BORDER_REPLICATE)
     fXl, fYl = fullup_left.shape
-    fXt, fYt = final_top.shape
+    fXt, fYt = fullup_top.shape
     print(fXl)
     print(fYl)
     print(fXt)
@@ -212,77 +213,107 @@ def make_border(large, small):
     return top_border, bottom_border
 
 
-# main function
-# gray = cv2.imread("img0.jpg", cv2.IMREAD_GRAYSCALE)
-front, left, top = drawSame()
-gray_front = front
-gray_left = left
-gray_top = top
-cv2.imshow("front", front)
-cv2.imshow("left", left)
-cv2.imshow("top", top)
-new_kernel = gaussian_filter(1)
-newImg_front = convolution(gray_front, new_kernel)
-newImg_left = convolution(gray_left, new_kernel)
-newImg_top = convolution(gray_top, new_kernel)
-gf, df = sobel(newImg_front)
-gl, dl = sobel(newImg_left)
-gt, dt = sobel(newImg_top)
-final_front = non_max_suppression(gf, df)
-final_left = non_max_suppression(gl, dl)
-final_top = non_max_suppression(gt, dt)
-# cv2.imwrite("gradient orientation.jpg", d)
-# cv2.imwrite("gradient magnitude.jpg", g)
+def return_3_view_img():
+    # main function
+    # gray = cv2.imread("img0.jpg", cv2.IMREAD_GRAYSCALE)
+    front, left, top = drawSame()
+    gray_front = front
+    gray_left = left
+    gray_top = top
+    # cv2.imshow("front", front)
+    # cv2.imshow("left", left)
+    # cv2.imshow("top", top)
+    new_kernel = gaussian_filter(1)
+    newImg_front = convolution(gray_front, new_kernel)
+    newImg_left = convolution(gray_left, new_kernel)
+    newImg_top = convolution(gray_top, new_kernel)
+    gf, df = sobel(newImg_front)
+    gl, dl = sobel(newImg_left)
+    gt, dt = sobel(newImg_top)
+    final_front = non_max_suppression(gf, df)
+    final_left = non_max_suppression(gl, dl)
+    final_top = non_max_suppression(gt, dt)
+    # cv2.imwrite("gradient orientation.jpg", d)
+    # cv2.imwrite("gradient magnitude.jpg", g)
 
-# now we put every pixels with color into a set for three view images, use these sets to rescale our object later
-front_with_color_pixel, front_y_length, front_x_length = get_pixel_set(final_front)
-left_with_color_pixel, left_y_length, left_x_length = get_pixel_set(final_left)
-top_with_color_pixel, top_y_length, top_x_length = get_pixel_set(final_top)
-print(front_with_color_pixel)
-print(left_with_color_pixel)
-print(top_with_color_pixel)
-# print(front_x_length)
-# print(front_y_length)
-# print(left_x_length)
-# print(left_y_length)
-# print(top_x_length)
-# print(top_y_length)
-check_num = find_scale_image(front_x_length, front_y_length, left_x_length, left_y_length, top_x_length, top_y_length)
-# print(check_num)
+    # now we put every pixels with color into a set for three view images, use these sets to rescale our object later
+    front_with_color_pixel, front_y_length, front_x_length = get_pixel_set(gray_front)
+    left_with_color_pixel, left_y_length, left_x_length = get_pixel_set(gray_left)
+    top_with_color_pixel, top_y_length, top_x_length = get_pixel_set(gray_top)
+    print(front_with_color_pixel)
+    print(left_with_color_pixel)
+    print(top_with_color_pixel)
+    # print(front_x_length)
+    # print(front_y_length)
+    # print(left_x_length)
+    # print(left_y_length)
+    # print(top_x_length)
+    # print(top_y_length)
+    check_num = find_scale_image(front_x_length, front_y_length, left_x_length, left_y_length, top_x_length,
+                                 top_y_length)
+    # print(check_num)
 
-if check_num == 1:
-    # resize left and top imgs with front img scale
-    r1 = front_y_length / left_y_length
-    r2 = front_x_length / top_x_length
-    fullup_img1, fullup_img2 = resize(gray_front, gray_left, gray_top, r1, r2)
-elif check_num == 2:
-    # resize left and front imgs with top img scale
-    r1 = top_y_length / left_x_length
-    r2 = top_x_length / front_x_length
-    fullup_img1, fullup_img2 = resize(gray_top, gray_left, gray_front, r1, r2)
-elif check_num == 3:
-    # resize top and front imgs with left img scale
-    r1 = left_x_length / top_y_length
-    r2 = left_y_length / front_y_length
-    fullup_img1, fullup_img2 = resize(gray_left, gray_top, gray_front, r1, r2)
+    if check_num == 1:
+        # resize left and top imgs with front img scale
+        r1 = front_y_length / left_y_length
+        r2 = front_x_length / top_x_length
+        fullup_img1, fullup_img2 = resize(gray_front, gray_left, gray_top, r1, r2)
+    elif check_num == 2:
+        # resize left and front imgs with top img scale
+        r1 = top_y_length / left_x_length
+        r2 = top_x_length / front_x_length
+        fullup_img1, fullup_img2 = resize(gray_top, gray_left, gray_front, r1, r2)
+    elif check_num == 3:
+        # resize top and front imgs with left img scale
+        r1 = left_x_length / top_y_length
+        r2 = left_y_length / front_y_length
+        fullup_img1, fullup_img2 = resize(gray_left, gray_top, gray_front, r1, r2)
 
-newImg_resize_left = convolution(fullup_img1, new_kernel)
-newImg_resize_top = convolution(fullup_img2, new_kernel)
-grl, drl = sobel(newImg_resize_left)
-grt, drt = sobel(newImg_resize_top)
-final_resize_img1 = non_max_suppression(grl, drl)
-final_reszie_img2 = non_max_suppression(grt, drt)
-# cv2.imshow("Detection_front", final_front.astype("uint8"))
-# cv2.imshow("Detection_left", final_left.astype("uint8"))
-# cv2.imshow("Detection_top", final_top.astype("uint8"))
+    newImg_resize_left = convolution(fullup_img1, new_kernel)
+    newImg_resize_top = convolution(fullup_img2, new_kernel)
+    grl, drl = sobel(newImg_resize_left)
+    grt, drt = sobel(newImg_resize_top)
+    final_resize_img1 = non_max_suppression(grl, drl)
+    final_resize_img2 = non_max_suppression(grt, drt)
+    # cv2.imshow("Detection_front", final_front.astype("uint8"))
+    # cv2.imshow("Detection_left", final_left.astype("uint8"))
+    # cv2.imshow("Detection_top", final_top.astype("uint8"))
 
-titles = ['front', 'left', 'top', 'resize img1', 'resize img2', 'final img1', 'final img2', 'final top', 'fr1', 'fr2']
-images = [front, left, top, fullup_img1, fullup_img2, final_front, final_left, final_top, final_resize_img1, final_reszie_img2]
+    titles = ['front', 'left', 'top', 'resize img1', 'resize img2', 'final img1', 'final img2', 'final top', 'fr1',
+              'fr2']
+    images = [front, left, top, fullup_img1, fullup_img2, final_front, final_left, final_top, final_resize_img1,
+              final_resize_img2]
 
-for i in range(10):
-    plt.subplot(2, 5, i+1), plt.imshow(images[i], 'gray'), plt.axis(sharex=True, sharey=True)
-    plt.title(titles[i])
+    # _, img1y, img1x = get_pixel_set(gray_top)
+    # _, img2y, img2x = get_pixel_set(fullup_img1)
+    # _, img3y, img3x = get_pixel_set(fullup_img2)
+    # print(img1y)
+    # print(img1x)
+    # print(img2y)
+    # print(img2x)
+    # print(img3y)
+    # print(img3x)
 
-plt.show()
+    for i in range(10):
+        plt.subplot(2, 5, i + 1), plt.imshow(images[i], 'gray'), plt.axis(sharex=True, sharey=True)
+        plt.title(titles[i])
+
+    plt.show()
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+    if check_num == 1:
+        # return front, left, top
+        return gray_front, fullup_img1, fullup_img2
+    elif check_num == 2:
+        return fullup_img2, fullup_img1, gray_top
+    elif check_num == 3:
+        return fullup_img2, gray_left, fullup_img1
+
+
+img1, img2, img3 = return_3_view_img()
+cv2.imshow("1", img1)
+cv2.imshow("2", img2)
+cv2.imshow("3", img3)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
