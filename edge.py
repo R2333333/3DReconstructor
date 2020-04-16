@@ -156,6 +156,51 @@ def find_scale_image(fxl, fyl, lxl, lyl, txl, tyl):
     return index
 
 
+def resize(img1, img2, img3, r1, r2):
+    Xf, Yf = img1.shape
+    Xl, Yl = img2.shape
+    Xt, Yt = img3.shape
+    # ratio for left img
+    ratio1 = r1
+    resize_left_x = int(Xl * ratio1)
+    resize_left_y = int(Yl * ratio1)
+    print(resize_left_x)
+    print(resize_left_y)
+    dim_left = (resize_left_x, resize_left_y)
+    resize_left = cv2.resize(img2, dim_left)
+    # ratio for top img
+    ratio2 = r2
+    resize_top_x = int(Xt * ratio2)
+    resize_top_y = int(Yt * ratio2)
+    print(resize_top_x)
+    print(resize_top_y)
+    dim_top = (resize_top_x, resize_top_y)
+    resize_top = cv2.resize(img3, dim_top)
+    # border = (kX - 1) // 2
+    # image = cv2.copyMakeBorder(image, border, border, border, border, cv2.BORDER_CONSTANT)
+    resize_Xl, resize_Yl = resize_left.shape
+    resize_Xt, resize_Yt = resize_top.shape
+    # top_bottom_Lborder = (Xf - resize_Xl) // 2
+    # left_right_Lborder = (Yf - resize_Yl) // 2
+    # top_bottom_Tborder = (Xf - resize_Xt) // 2
+    # left_right_Tborder = (Yf - resize_Yt) // 2
+    top_Lborder, bottom_Lborder = make_border(Xf, resize_Xl)
+    left_Lborder, right_Lborder = make_border(Yf, resize_Yl)
+    top_Tborder, bottom_Tborder = make_border(Xf, resize_Xt)
+    left_Tborder, right_Tborder = make_border(Yf, resize_Yt)
+    fullup_left = cv2.copyMakeBorder(resize_left, top_Lborder, bottom_Lborder, left_Lborder, right_Lborder,
+                                     cv2.BORDER_REPLICATE)
+    fullup_top = cv2.copyMakeBorder(resize_top, top_Tborder, bottom_Tborder, left_Tborder, right_Tborder,
+                                    cv2.BORDER_REPLICATE)
+    fXl, fYl = fullup_left.shape
+    fXt, fYt = final_top.shape
+    print(fXl)
+    print(fYl)
+    print(fXt)
+    print(fYt)
+    return fullup_left, fullup_top
+
+
 def make_border(large, small):
     if (large - small) % 2 == 0:
         top_border = (large - small) // 2
@@ -204,61 +249,35 @@ print(top_with_color_pixel)
 # print(top_y_length)
 check_num = find_scale_image(front_x_length, front_y_length, left_x_length, left_y_length, top_x_length, top_y_length)
 # print(check_num)
-# if check_num == 1:
-#     # resize left and top imgs with front img scale
-Xf, Yf = gray_front.shape
-Xl, Yl = gray_left.shape
-Xt, Yt = gray_top.shape
-# ratio for left img
-ratio1 = front_y_length / left_y_length
-resize_left_x = int(Xl * ratio1)
-resize_left_y = int(Yl * ratio1)
-print(resize_left_x)
-print(resize_left_y)
-dim_left = (resize_left_x, resize_left_y)
-resize_left = cv2.resize(left, dim_left)
-# ratio for top img
-ratio2 = front_x_length / top_x_length
-resize_top_x = int(Xt * ratio2)
-resize_top_y = int(Yt * ratio2)
-print(resize_top_x)
-print(resize_top_y)
-dim_top = (resize_top_x, resize_top_y)
-resize_top = cv2.resize(top, dim_top)
-# border = (kX - 1) // 2
-# image = cv2.copyMakeBorder(image, border, border, border, border, cv2.BORDER_CONSTANT)
-resize_Xl, resize_Yl = resize_left.shape
-resize_Xt, resize_Yt = resize_top.shape
-# top_bottom_Lborder = (Xf - resize_Xl) // 2
-# left_right_Lborder = (Yf - resize_Yl) // 2
-# top_bottom_Tborder = (Xf - resize_Xt) // 2
-# left_right_Tborder = (Yf - resize_Yt) // 2
-top_Lborder, bottom_Lborder = make_border(Xf, resize_Xl)
-left_Lborder, right_Lborder = make_border(Yf, resize_Yl)
-top_Tborder, bottom_Tborder = make_border(Xf, resize_Xt)
-left_Tborder, right_Tborder = make_border(Yf, resize_Yt)
-fullup_left = cv2.copyMakeBorder(resize_left, top_Lborder, bottom_Lborder, left_Lborder, right_Lborder, cv2.BORDER_REPLICATE)
-fullup_top = cv2.copyMakeBorder(resize_top, top_Tborder, bottom_Tborder, left_Tborder, right_Tborder, cv2.BORDER_REPLICATE)
-fXl, fYl = fullup_left.shape
-fXt, fYt = final_top.shape
-print(fXl)
-print(fYl)
-print(fXt)
-print(fYt)
-# fullup_left = cv2.copyMakeBorder(resize_left, 100, 100, 100, 100, cv2.BORDER_REPLICATE)
-# fullup_top = cv2.copyMakeBorder(resize_top, 100, 100, 100, 100, cv2.BORDER_REPLICATE)
-newImg_resize_left = convolution(fullup_left, new_kernel)
-newImg_resize_top = convolution(fullup_top, new_kernel)
+
+if check_num == 1:
+    # resize left and top imgs with front img scale
+    r1 = front_y_length / left_y_length
+    r2 = front_x_length / top_x_length
+    fullup_img1, fullup_img2 = resize(gray_front, gray_left, gray_top, r1, r2)
+elif check_num == 2:
+    # resize left and front imgs with top img scale
+    r1 = top_y_length / left_x_length
+    r2 = top_x_length / front_x_length
+    fullup_img1, fullup_img2 = resize(gray_top, gray_left, gray_front, r1, r2)
+elif check_num == 3:
+    # resize top and front imgs with left img scale
+    r1 = left_x_length / top_y_length
+    r2 = left_y_length / front_y_length
+    fullup_img1, fullup_img2 = resize(gray_left, gray_top, gray_front, r1, r2)
+
+newImg_resize_left = convolution(fullup_img1, new_kernel)
+newImg_resize_top = convolution(fullup_img2, new_kernel)
 grl, drl = sobel(newImg_resize_left)
 grt, drt = sobel(newImg_resize_top)
-final_resize_left = non_max_suppression(grl, drl)
-final_reszie_top = non_max_suppression(grt, drt)
+final_resize_img1 = non_max_suppression(grl, drl)
+final_reszie_img2 = non_max_suppression(grt, drt)
 # cv2.imshow("Detection_front", final_front.astype("uint8"))
 # cv2.imshow("Detection_left", final_left.astype("uint8"))
 # cv2.imshow("Detection_top", final_top.astype("uint8"))
 
-titles = ['front', 'left', 'top', 'resize left', 'resize top', 'final front', 'final left', 'final top', 'frl', 'frt']
-images = [front, left, top, fullup_left, fullup_top, final_front, final_left, final_top, final_resize_left, final_reszie_top]
+titles = ['front', 'left', 'top', 'resize img1', 'resize img2', 'final img1', 'final img2', 'final top', 'fr1', 'fr2']
+images = [front, left, top, fullup_img1, fullup_img2, final_front, final_left, final_top, final_resize_img1, final_reszie_img2]
 
 for i in range(10):
     plt.subplot(2, 5, i+1), plt.imshow(images[i], 'gray'), plt.axis(sharex=True, sharey=True)
