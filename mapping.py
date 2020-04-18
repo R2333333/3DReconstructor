@@ -21,15 +21,15 @@ def mapFrontBack(front, left, top, verticalCenter, horizontalCenter):
             if front[row][col] != 0:
                 frontMost = nonzerofromFront(top, col)
                 if abs(rightMost - verticalCenter) < abs(frontMost - horizontalCenter):
-                    collect.append((col, rightMost, front.shape[0] - row))
+                    collect.append((col, left.shape[1] - rightMost, front.shape[0] - row))
                 else:
-                    collect.append((col, frontMost, front.shape[0] - row))
+                    collect.append((col, left.shape[1] - frontMost, front.shape[0] - row))
                 
                 backMost = nonzerofromBack(top, col)
                 if abs(leftMost - verticalCenter) < abs(backMost - horizontalCenter):
-                    collect.append((col, leftMost, front.shape[0] - row))
+                    collect.append((col, left.shape[1] - leftMost, front.shape[0] - row))
                 else:
-                    collect.append((col, backMost, front.shape[0] - row))
+                    collect.append((col, left.shape[1] - backMost, front.shape[0] - row))
     return collect
 
 def mapLeftRight(front, left, top, verticalCenterL, verticalCenterF, horizontalCenterT):
@@ -43,15 +43,15 @@ def mapLeftRight(front, left, top, verticalCenterL, verticalCenterF, horizontalC
             if left[row][col] != 0:
                 frontMost = nonzerofromLeft(top, col)
                 if abs(leftMost - verticalCenterF) < abs(frontMost - verticalCenterF):
-                    collect.append((leftMost, col, left.shape[0] - row))
+                    collect.append((leftMost, left.shape[1]-col, left.shape[0] - row))
                 else:
-                    collect.append((frontMost, frontMost, left.shape[0] - row))
+                    collect.append((frontMost, left.shape[1]-col, left.shape[0] - row))
                 
                 backMost = nonzerofromRight(top, col)
                 if abs(rightMost - verticalCenterF) < abs(backMost - verticalCenterF):
-                    collect.append((rightMost, col, left.shape[0] - row))
+                    collect.append((rightMost, left.shape[1]-col, left.shape[0] - row))
                 else:
-                    collect.append((backMost, col, left.shape[0] - row))
+                    collect.append((backMost, left.shape[1]-col, left.shape[0] - row))
     return collect
 
 def mapTopBottom(front, left, top, verticalCenter, horizontalCenter):
