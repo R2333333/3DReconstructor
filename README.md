@@ -44,8 +44,12 @@ The successful project should produce 3D object similar to the original object, 
 
 Imported package:
 ---
-import numpy
-import cv2
+import numpy.
+import cv2.
+import itertools.
+from matplotlib import pyplot.
+from mpl_toolkits.mplot3d import Axes3D.
+from scipy.interpolate import griddata.
 
 
 *Table 1. Weekly Schedual*
