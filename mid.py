@@ -26,15 +26,6 @@ def extract(i):
     cv2.imwrite('image2.png', roi)
     return roi
 
-#helper function to calculate the thresh value
-def thresh_help(img, lowThresholdRatio=0.05, highThresholdRatio=0.09):
-    highThreshold = img.max() * highThresholdRatio;
-    lowThreshold = highThreshold * lowThresholdRatio;
-    M, N = img.shape
-    res = np.zeros((M,N), dtype=np.uint8)
-    weak = np.int32(25)
-    return weak
-
 #put img1 into the center of the img2
 def merge(img1, img2):
     #the shape of the inserted image
