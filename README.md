@@ -1,6 +1,6 @@
 ReadMe Part:
 ---
-#Imported package:
+Imported package:
 ---
     1. import numpy.
     2. import cv2.
