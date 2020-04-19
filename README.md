@@ -1,4 +1,5 @@
 ReadMe Part:
+---
 #Imported package:
 ---
     1. import numpy.
@@ -16,6 +17,7 @@ How to run our code:
     4. fourth, enter: python test.py
 
 Proposal Part:
+---
 # 3DReconstructor
 
 ## Construction of 3D Visual Representations From 2D Images
