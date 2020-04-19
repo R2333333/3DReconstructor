@@ -42,6 +42,12 @@ The goals we need to achieve:
     
 The successful project should produce 3D object similar to the original object, except for surfaces that curve into the object. The time should be engough if we start the project early.
 
+Imported package:
+---
+import numpy
+import cv2
+
+
 *Table 1. Weekly Schedual*
 <table style="width:100%">
   <tr>
