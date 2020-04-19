@@ -1,11 +1,4 @@
-# 3DReconstructor
-
-## Construction of 3D Visual Representations From 2D Images
-
-Authors:
----
-Roy Xu, Jiangyuan Wu, Wayne Du, Zhaohong Wan
-
+ReadMe Part:
 Imported package:
 ---
     1. import numpy.
@@ -21,6 +14,16 @@ How to run our code:
     2. second, download all the file.
     3. third, open command line prompt.
     4. fourth, enter: python test.py
+
+Proposal Part:
+# 3DReconstructor
+
+## Construction of 3D Visual Representations From 2D Images
+
+Authors:
+---
+Roy Xu, Jiangyuan Wu, Wayne Du, Zhaohong Wan
+
     
 Description:
 ---
