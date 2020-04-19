@@ -2,12 +2,26 @@
 
 ## Construction of 3D Visual Representations From 2D Images
 
-
 Authors:
 ---
 Roy Xu, Jiangyuan Wu, Wayne Du, Zhaohong Wan
 
+Imported package:
+---
+    1. import numpy.
+    2. import cv2.
+    3. import itertools.
+    4. from matplotlib import pyplot.
+    5. from mpl_toolkits.mplot3d import Axes3D.
+    6. from scipy.interpolate import griddata.
 
+Imported package:
+---
+    1. first, install all the package we had used(can check the imported package list above).
+    2. second, download all the file.
+    3. third, open command line prompt.
+    4. fourth, enter: python test.py
+    
 Description:
 ---
 With regular cameras, capturing 2D images of a physical object from front/top/side perspectives. Determining object-margins in 2D images. Using computer vision techniques to correspond object-margins from different perspectives, and assemble 3D visual representation.
@@ -42,103 +56,3 @@ The goals we need to achieve:
     
 The successful project should produce 3D object similar to the original object, except for surfaces that curve into the object. The time should be engough if we start the project early.
 
-Imported package:
----
-import numpy.
-import cv2.
-import itertools.
-from matplotlib import pyplot.
-from mpl_toolkits.mplot3d import Axes3D.
-from scipy.interpolate import griddata.
-
-
-*Table 1. Weekly Schedual*
-<table style="width:100%">
-  <tr>
-    <td></td>
-    <th>Roy Xu</th>
-    <th>Wayne Du</th>
-    <th>Jiangyuan Wu</th>
-    <th>Zhaohong Wan</th>
-  </tr>
-  <tr>
-    <td>week 1</td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-
-  </tr>
-  <tr>
-    <td>week 2</td>
-    <td></td>
-    <td></td>
-    <td></td>
-      <td></td>
-
-  </tr>
-  <tr>
-    <td>week 2</td>
-    <td></td>
-    <td></td>
-    <td></td>
-      <td></td>
-
-  </tr>
-  <tr>
-    <td>week 3</td>
-    <td></td>
-    <td></td>
-    <td></td>
-      <td></td>
-
-  </tr>
-  <tr>
-    <td>week 4</td>
-    <td></td>
-    <td></td>
-    <td></td>
-      <td></td>
-
-  </tr>
-  <tr>
-    <td>week 5</td>
-    <td></td>
-    <td></td>
-    <td></td>
-      <td></td>
-
-  </tr>
-  <tr>
-    <td>week 6</td>
-    <td></td>
-    <td></td>
-    <td></td>
-      <td></td>
-
-  </tr>
-  <tr>
-    <td>week 7</td>
-    <td></td>
-    <td></td>
-    <td></td>
-      <td></td>
-
-  </tr>
-  <tr>
-    <td>week 8</td>
-    <td></td>
-    <td></td>
-    <td></td>
-      <td></td>
-
-  </tr>
-  <tr>
-    <td>week 9</td>
-    <td></td>
-    <td></td>
-    <td></td>
-      <td></td>
-
-  </tr>
-</table>
