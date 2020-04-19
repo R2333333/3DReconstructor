@@ -15,7 +15,7 @@ Imported package:
     5. from mpl_toolkits.mplot3d import Axes3D.
     6. from scipy.interpolate import griddata.
 
-Imported package:
+How to run our code:
 ---
     1. first, install all the package we had used(can check the imported package list above).
     2. second, download all the file.
